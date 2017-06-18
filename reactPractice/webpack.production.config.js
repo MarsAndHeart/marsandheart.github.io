@@ -29,6 +29,14 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: __dirname + "/app/index.template.html"//new 一个这个插件的实例，并传入相关的参数
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      mangle: {
+        except: ['exports', 'require']
+      }
     })
   ]
 }
