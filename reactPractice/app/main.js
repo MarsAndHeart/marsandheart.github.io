@@ -1,5 +1,17 @@
-import React from 'react';
-import {render} from 'react-dom';
-import Navigator from './Navigator';
+import React from 'react'
+import {render} from 'react-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import App from './test/reduxTest/components/App'
+import reducers from './test/reduxTest/reducers'
 
-render(<Navigator />, document.getElementById('app'));
+const store = createStore(reducers)
+
+render(
+  <Provider store={store}>
+    <div>
+      <App />
+    </div>
+  </Provider>,
+  document.getElementById('app')
+)
