@@ -49,3 +49,6 @@ https://reacttraining.com/react-router/web/guides/quick-start
 
 react-router4 第一篇
 http://www.cnblogs.com/daowangzhizhu-pt/p/6652764.html
+
+eslint-plugin-react
+https://www.npmjs.com/package/eslint-plugin-react
