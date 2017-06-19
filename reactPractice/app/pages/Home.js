@@ -1,9 +1,16 @@
+/* @flow */
 import React from 'react'
 
-const Home = (props) => {
+const Hello = (props) => (
+  <div>id:{props.id}</div>
+)
+
+
+const Home = () => {
   return(
     <div>
       <h2>homePage</h2>
+      <Hello id={3}/>
     </div>
   )
 }
