@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -10,32 +11,55 @@ module.exports = {
     filename: "bundle.js"
   },
 
-  module: {//在配置文件里添加JSON loader
+  module: {
     rules: [
       {
         test: /\.json$/,
-        loader: "json-loader"
+        use: 'json-loader'
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader?modules'
+        use: ExtractTextPlugin.extract({
+          use: 'css-loader?modules'
+        })
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        use: 'babel-loader'
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader?limit=8192&name=images/[name].[ext]'
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader?name=fonts/[name].[ext]'
+        ]
+      },
+      {
+        test: /\.(csv|tsv)$/,
+        use: 'csv-loader'
+      },
+      {
+        test: /\.xml$/,
+        use: 'xml-loader',
       }
     ]
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: __dirname + "/app/index.template.html"//new 一个这个插件的实例，并传入相关的参数
+      template: __dirname + "/app/index.template.html"//html生成
     }),
+    new ExtractTextPlugin('styles.css'),//CSS分离
     new webpack.HotModuleReplacementPlugin()//热加载插件
   ],
 
-  devServer: {
+  devServer: {//本地开发服务器
     historyApiFallback: true,
     inline: true,
     hot: true
