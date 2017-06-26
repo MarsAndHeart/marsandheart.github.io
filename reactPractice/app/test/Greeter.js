@@ -8,6 +8,7 @@ class Greeter extends Component{
       <div className={styles.root}>
         {config.greetText}
         <div style={{backgroundColor:'green'}}>hello react</div>
+        <div className={styles.img} >hello img</div>
       </div>
     );
   }

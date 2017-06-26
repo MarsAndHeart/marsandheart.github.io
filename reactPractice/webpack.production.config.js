@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry:  __dirname + "/app/main.js",
@@ -9,7 +8,7 @@ module.exports = {
     filename: "bundle.js"
   },
 
-  module: {
+  module: {//在配置文件里添加JSON loader
     rules: [
       {
         test: /\.json$/,
@@ -17,34 +16,20 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader?modules'
-        })
+        loader: 'style-loader!css-loader?modules'
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: 'babel-loader'
+        loader: 'babel-loader'
       },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader?limit=8192&name=images/[name].[ext]'
-        ]
+      { 
+        test: /\.(gif|jpg|png)\??.*$/,
+        loader: 'url-loader?limit=8192&name=images/[name].[ext]'
       },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader?name=fonts/[name].[ext]'
-        ]
-      },
-      {
-        test: /\.(csv|tsv)$/,
-        use: 'csv-loader'
-      },
-      {
-        test: /\.xml$/,
-        use: 'xml-loader',
+      { 
+        test: /\.(woff|svg|eot|ttf)$/,
+        loader: "file-loader?name=fonts/[name].[ext]"
       }
     ]
   },
@@ -53,14 +38,28 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: __dirname + "/app/index.template.html"//new 一个这个插件的实例，并传入相关的参数
     }),
-    new ExtractTextPlugin('styles.css'),//CSS分离
-    new webpack.optimize.UglifyJsPlugin({//代码压缩
-      compress: {
-        warnings: false
-      },
-      mangle: {
-        except: ['exports', 'require']
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
       }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true,
+        warnings: false,
+        drop_console:true,
+        drop_debugger:true
+      },
+      comments: false
     })
   ]
 }

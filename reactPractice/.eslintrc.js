@@ -12,8 +12,7 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-        "flowtype"
+        "react"
     ],
     "rules": {
         "react/jsx-uses-react": "error",
@@ -25,21 +24,17 @@ module.exports = {
         "array-element-newline": "off",
         "arrow-body-style": "off",
         "arrow-parens": "off",
-        "arrow-spacing": [
-            "error",
-            {
-                "after": true,
-                "before": true
-            }
-        ],
+        "arrow-spacing": "off",
         "block-scoped-var": "error",
-        "block-spacing": "error",
-        "brace-style": "error",
+        "block-spacing": [
+            "error",
+            "never"
+        ],
         "callback-return": "error",
         "camelcase": "error",
-        "capitalized-comments": "error",
+        // "capitalized-comments": "error",
         "class-methods-use-this": "off",
-        "comma-dangle": "error",
+        "comma-dangle": "off",
         "comma-spacing": [
             "error",
             {
@@ -52,7 +47,10 @@ module.exports = {
             "last"
         ],
         "complexity": "error",
-        "computed-property-spacing": "error",
+        "computed-property-spacing": [
+            "error",
+            "never"
+        ],
         "consistent-return": "error",
         "consistent-this": "error",
         "curly": "error",
@@ -70,7 +68,7 @@ module.exports = {
             "expression"
         ],
         "generator-star-spacing": "error",
-        "global-require": "error",
+        "global-require": "off",
         "guard-for-in": "error",
         "handle-callback-err": "error",
         "id-blacklist": "error",
@@ -93,7 +91,7 @@ module.exports = {
         "lines-around-comment": "error",
         "lines-around-directive": "error",
         "max-depth": "error",
-        "max-len": "error",
+        // "max-len": "error",
         "max-lines": "error",
         "max-nested-callbacks": "error",
         "max-params": "error",
@@ -117,7 +115,7 @@ module.exports = {
         "no-div-regex": "error",
         "no-duplicate-imports": "error",
         "no-else-return": "error",
-        "no-empty-function": "error",
+        // "no-empty-function": "error",
         "no-eq-null": "error",
         "no-eval": "error",
         "no-extend-native": "error",
@@ -128,7 +126,7 @@ module.exports = {
         "no-implicit-coercion": "error",
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
-        "no-inline-comments": "error",
+        // "no-inline-comments": "error",
         "no-invalid-this": "error",
         "no-iterator": "error",
         "no-label-var": "error",
@@ -174,7 +172,7 @@ module.exports = {
         "no-shadow-restricted-names": "error",
         "no-spaced-func": "error",
         "no-sync": "error",
-        "no-tabs": "error",
+        // "no-tabs": "error",
         "no-template-curly-in-string": "error",
         "no-ternary": "off",
         "no-throw-literal": "error",
@@ -209,7 +207,7 @@ module.exports = {
         "padded-blocks": "off",
         "padding-line-between-statements": "error",
         "prefer-arrow-callback": "error",
-        "prefer-const": "error",
+        "prefer-const": "off",
         "prefer-destructuring": "error",
         "prefer-numeric-literals": "error",
         "prefer-promise-reject-errors": "error",
@@ -241,7 +239,7 @@ module.exports = {
             "error",
             "never"
         ],
-        "space-infix-ops": "error",
+        "space-infix-ops": "off",
         "space-unary-ops": "error",
         "spaced-comment": "error",
         "strict": "error",

@@ -1,16 +1,43 @@
-/* @flow */
 import React from 'react'
 
-const Hello = (props) => (
-  <div>id:{props.id}</div>
-)
+import pageStyle from '../css/page.css';
 
+const styles={
+  header:{
+    display:'flex',
+    flex:3,
+    fontSize:24,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  main:{
+    display:'flex',
+    flex:4,
+    fontSize:14,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  footer:{
+    display:'flex',
+    flex:3,
+    fontSize:16,
+    justifyContent:'center',
+    alignItems:'center',
+  }
+}
 
-const Home = () => {
-  return(
-    <div>
-      <h2>homePage</h2>
-      <Hello id={3}/>
+const Home = (props) => {
+  return (
+    <div className={pageStyle.page} >
+      <div style={styles.header}>
+        hello react
+      </div>
+      <div style={styles.main}>
+        this is a simple page
+      </div>
+      <div style={styles.footer}>
+        @marsandheart
+      </div>
     </div>
   )
 }

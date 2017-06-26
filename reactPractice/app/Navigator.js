@@ -1,28 +1,40 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  HashRouter,
   Route,
-  Link
 } from 'react-router-dom'
+
 import Home from './pages/Home'
-import About from './pages/About'
-import Topics from './pages/Topics'
+
+// import About from './test/About'
+// import Topics from './test/Topics'
+// import Report from './test/Report'
+// import Greeter from './test/Greeter'
+import MaterialDemo from './test/MaterialDemo'
+import TestRedux from './test/TestRedux'
+
+
+const ROUTES=[
+  {
+    path:'/test/MaterialDemo',
+    component:MaterialDemo,
+  },
+  {
+    path:'/test/testRedux',
+    component:TestRedux,
+  }
+]
 
 const Navigator = () => (
-  <Router>
+  <HashRouter>
     <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/topics">Topics</Link></li>
-      </ul>
-
-      <hr/>
-
       <Route exact path="/" component={Home}/>
-      <Route path="/about" component={About}/>
-      <Route path="/topics" component={Topics}/>
+      {
+        ROUTES.map((item, i) =>
+          <Route key={i} path={item.path} component={item.component} />
+        )
+      }
     </div>
-  </Router>
+  </HashRouter>
 )
 export default Navigator
