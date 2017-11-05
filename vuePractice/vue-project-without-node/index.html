@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>practice fo vue</title>
+<script src="../js/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  
+  <p v-if="seen">现在你看到我了</p>
+  
+  <template v-if="ok">
+    <p>it is ok</p>
+  </template>
+  
+  <span v-bind:title="message">
+    鼠标悬停几秒钟查看此处动态绑定的提示信息！
+  </span>
+  
+  <div>
+    <ol>
+      <li v-for="todo in todos">
+        {{ todo.text }}
+      </li>
+    </ol>
+  </div>
+
+  <pre><a v-bind:href="url">baidu</a></pre>
+
+  <div>
+    <p>{{ input }}</p>
+    <input v-model="input">
+  </div>
+
+  <button v-on:click="reverseMessage">反转字符串</button>
+
+</div>
+    
+<script>
+new Vue({
+  el: '#app',
+  data: {
+    seen: true,
+    ok: true,
+    message: '页面加载于 ' + new Date().toLocaleString(),
+    todos: [
+      { text: 'learn vue' },
+      { text: 'learn node' },
+      { text: 'learn mongodb' }
+    ],
+    url: 'http://www.baidu.com',
+    input: 'this is input',
+  },
+  methods:{
+    reverseMessage: function () {
+      this.input = this.input.split('').reverse().join('')
+      this.seen = !this.seen
+    }
+  }
+})
+</script>
+</body>
+</html>
