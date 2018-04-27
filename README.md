@@ -33,7 +33,7 @@ Git忽略规则.gitignore梳理
 http://www.cnblogs.com/kevingrace/p/5690241.html
 
 入门Webpack，看这篇就够了
-www://http.jianshu.com/p/42e11515c10f
+http://www.jianshu.com/p/42e11515c10f
 
 Linux chmod命令修改文件与文件夹权限命令代码
 http://www.cnblogs.com/geekdc/p/5497919.html
