@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>createjs</title>
+  <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+  <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
+</head>
+
+<body onload="initRec();">
+  <canvas id="demoCanvas" width="800" height="600"></canvas>
+</body>
+
+<script>
+  const stage = new createjs.Stage("demoCanvas");
+  createjs.Ticker.setFPS(60);
+  createjs.Ticker.on('tick', flushStage);
+
+  function flushStage() {
+    stage.update();
+  }
+
+  var blockArr = [
+    [0, 0, 0, 0, 0, -1, -1, -1, -1],
+    [0, 0, 0, 0, 0, 0, -1, -1, -1],
+    [0, 0, 0, 0, 0, 0, 0, -1, -1],
+    [0, 0, 0, 0, 0, 0, 0, 0, -1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [-1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [-1, -1, 0, 0, 0, 0, 0, 0, 0],
+    [-1, -1, -1, 0, 0, 0, 0, 0, 0],
+    [-1, -1, -1, -1, 0, 0, 0, 0, 0],
+  ];
+
+  const r = 25;
+  const l = 50;
+
+  const modules = [
+    [
+      [0, 0, 0, 0],
+      [1, 1, 1, 1],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1],
+    ], [
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+    ], [
+      [0, 0, 0, 0],
+      [2, 2, 2, 0],
+      [0, 0, 2, 0],
+      [0, 0, 0, 0],
+    ], [
+      [2, 0, 0, 0],
+      [0, 2, 0, 0],
+      [0, 2, 2, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 2, 0, 0],
+      [2, 2, 0, 0],
+      [0, 2, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [2, 0, 0, 0],
+      [2, 2, 2, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 0, 0, 0],
+      [3, 3, 3, 0],
+      [0, 3, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [3, 3, 0, 0],
+      [0, 3, 0, 0],
+      [0, 3, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 3, 0, 0],
+      [3, 3, 3, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [3, 0, 0, 0],
+      [0, 3, 3, 0],
+      [0, 0, 3, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 0, 0, 0],
+      [0, 4, 4, 0],
+      [0, 4, 4, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 0, 0, 0],
+      [4, 4, 0, 0],
+      [0, 4, 4, 0],
+      [0, 0, 0, 0],
+    ], [
+      [4, 0, 0, 0],
+      [4, 4, 0, 0],
+      [0, 4, 0, 0],
+      [0, 0, 0, 0],
+    ], [
+      [0, 0, 0, 0],
+      [0, 5, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+  ]
+
+  function blockNumToColor(blockNum) {
+    switch (blockNum) {
+      case -1: {
+        return '#000000'
+      }
+      case 0: {
+        return '#3C3C3C'
+      }
+      case 1: {
+        return '#8186EB'
+      }
+      case 2: {
+        return '#EF83AB'
+      }
+      case 3: {
+        return '#C5E580'
+      }
+      case 4: {
+        return '#E6996D'
+      }
+      case 5: {
+        return '#F4D289'
+      }
+    }
+  }
+
+  let positionShapeArr = [];
+  function initRec() {
+    var bg = new createjs.Shape();
+    bg.graphics.beginFill('#212121').drawRect(0, 0, 800, 600);
+    stage.addChild(bg);
+    stage.update();
+
+    const row = 9;
+    const col = 9;
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < col; j++) {
+        if (blockArr[i][j] === -1) {
+          continue
+        }
+        let params = {
+          x: (row - i) * r + l * j,
+          y: 100 + (l * 0.9) * i,
+          color: blockNumToColor(blockArr[i][j]),
+          bindId: `arr${i}${j}`,
+        }
+
+        let bgBlock = createBgBlock(params);
+        bgBlock.x = params.x;
+        bgBlock.y = params.y;
+        bgBlock.gameInfo = {
+          row: i,
+          col: j,
+          isFillColor: false
+        }
+        positionShapeArr.push(bgBlock);
+        stage.addChild(bgBlock);
+        stage.update();
+      }
+    }
+
+    flushNextModule();
+    createBtn();
+  }
+
+  function createBgBlock(params) {
+    const { color, bindId } = params;
+    var positionShape = new createjs.Shape();
+    positionShape.graphics.beginFill(color).drawPolyStar(0, 0, (r * 1.05), 6, 0, 90);
+
+    return positionShape;
+  }
+
+  let nextModuleId = '';
+  let isDragging = false;
+  function addModule(positionArr, bindId) {
+    var shape = new createjs.Shape();
+
+    let positionObjArr = [];
+    let color = '#3C3C3C';
+    for (let i = 0; i < positionArr.length; i++) {
+      for (let j = 0; j < positionArr[i].length; j++) {
+        if (positionArr[i][j]) {
+          color = blockNumToColor(positionArr[i][j]);
+          positionObjArr.push({
+            x: i * l - j * r + r,
+            y: j * (l * 0.9) + r,
+          })
+        }
+      }
+    }
+
+    for (let i = 0; i < positionObjArr.length; i++) {
+      let p = positionObjArr[i];
+      shape.graphics.beginFill(color).drawPolyStar(p.x, p.y, r, 6, 0, 90);
+    }
+
+    shape.x = 600;
+    shape.y = 100;
+    shape.shadow = new createjs.Shadow('#000000', 0, 0, 10);
+    shape.scaleX = 0.8;
+    shape.scaleY = 0.8;
+    stage.addChild(shape);
+
+    var oX;
+    var oY;
+
+    function handleMouseDown(e) {
+      isDragging = true;
+      oX = e.stageX;
+      oY = e.stageY;
+      shape.scaleX = 1;
+      shape.scaleY = 1;
+    }
+
+
+    function isBgBlockHitOneOfColorBlock(block) {
+      return positionObjArr.find(position => {
+        let hitPoint = {
+          x: shape.x + position.x - block.x,
+          y: shape.y + position.y - block.y,
+        }
+        return block.hitTest(hitPoint.x, hitPoint.y)
+      })
+    }
+
+    const pointNum = positionObjArr.length;
+    function moveShape(e) {
+      e.target.x += e.stageX - oX;
+      e.target.y += e.stageY - oY;
+      oX = e.stageX;
+      oY = e.stageY;
+
+      let hitPositionShapes = [];
+      let noHitPositionShapes = [];
+      positionShapeArr.forEach(targetBgBlock => {
+        targetBgBlock.alpha = 1;
+        if (isBgBlockHitOneOfColorBlock(targetBgBlock)
+          && !targetBgBlock.gameInfo.isFillColor) {
+          hitPositionShapes.push(targetBgBlock);
+        } else {
+          noHitPositionShapes.push(targetBgBlock);
+        }
+      })
+      if (hitPositionShapes.length === positionObjArr.length) {
+        hitPositionShapes.forEach(target => {
+          target.alpha = 0.2;
+        })
+      }
+    }
+
+    function handleMouseUp(e) {
+      if (!isDragging) {
+        return;
+      }
+
+      let flag = 0;
+      let hitPositionShapes = [];
+
+      positionShapeArr.forEach(targetBgBlock => {
+        if (isBgBlockHitOneOfColorBlock(targetBgBlock)
+          && !targetBgBlock.gameInfo.isFillColor) {
+          hitPositionShapes.push(targetBgBlock);
+        }
+      })
+      if (hitPositionShapes.length === positionObjArr.length) {
+        hitPositionShapes.forEach(target => {
+          target.gameInfo.isFillColor = true;
+          target.alpha = 1;
+          target.graphics.beginFill(color).drawPolyStar(0, 0, r, 6, 0, 90);
+        })
+        flag = 1;
+      }
+
+      if (flag === 1) {
+        flushNextModule();
+      } else {
+        shape.scaleX = 0.8;
+        shape.scaleY = 0.8;
+        shape.x = 600;
+        shape.y = 100;
+      }
+      isDragging = false;
+
+      judgeToRemove();
+    }
+
+    shape.addEventListener('mousedown', handleMouseDown);
+    shape.addEventListener('pressmove', moveShape);
+    stage.addEventListener("stagemouseup", handleMouseUp);
+
+    stage.addEventListener(`removeBlock-${bindId}`, () => {
+      shape.removeEventListener('mousedown', handleMouseDown);
+      shape.removeEventListener('pressmove', moveShape);
+      stage.removeEventListener('stagemouseup', handleMouseUp);
+      stage.removeChild(shape);
+      stage.update();
+    })
+  }
+
+  function createBtn() {
+    var btn = new createjs.Shape();
+    btn.graphics.beginFill('#99ffff').drawRect(0, 0, 50, 50);
+
+    btn.x = 600;
+    btn.y = 520;
+    stage.addChild(btn);
+    stage.update();
+
+    btn.addEventListener('click', flushNextModule);
+  }
+
+  function getRandomStr(len) {
+    let str = "";
+    for (; str.length < len; str += Math.random().toString(36).substr(2));
+    return str.substr(0, len);
+  }
+  function flushNextModule() {
+    stage.dispatchEvent(`removeBlock-next${nextModuleId}`);
+    nextModuleId = getRandomStr(8);
+    addModule(
+      modules[Math.floor(Math.random() * modules.length)],
+      `next${nextModuleId}`
+    );
+  }
+
+  function judgeToRemove() {
+    let removeArrs = [];
+    const judgeTargetGroup = (group) => {
+      if (group.every(item => item.gameInfo.isFillColor)) {
+        removeArrs.push(group);
+      }
+    }
+    const judgeRow = () => {
+      for (let r = 0; r < 9; r++) {
+        const currentRow = positionShapeArr.filter(ele => ele.gameInfo.row === r);
+        judgeTargetGroup(currentRow);
+      }
+    }
+    const judgeCol = () => {
+      for (let c = 0; c < 9; c++) {
+        const currentCol = positionShapeArr.filter(ele => ele.gameInfo.col === c);
+        judgeTargetGroup(currentCol);
+      }
+    }
+    const judgeSlash = () => {
+      for (let s = -4; s < 5; s++) {
+        const currentSlash = positionShapeArr.filter(ele =>
+          ele.gameInfo.col - ele.gameInfo.row === s);
+        judgeTargetGroup(currentSlash);
+      }
+    }
+    judgeRow();
+    judgeCol();
+    judgeSlash();
+
+    removeColorGroups(removeArrs);
+  }
+
+  function removeColorGroups(arr) {
+    let len = arr.length;
+    for (let i = 0; i < len; i++) {
+      const currentGroup = arr[i];
+      currentGroup.forEach(shape => {
+        shape.gameInfo.isFillColor = false;
+        shape.graphics.beginFill(blockNumToColor(0)).drawPolyStar(0, 0, (r * 1.05), 6, 0, 90);
+      })
+    }
+  }
+
+</script>
+
+</html>
