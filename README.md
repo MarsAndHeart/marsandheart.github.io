@@ -55,9 +55,3 @@ https://www.npmjs.com/package/eslint-plugin-react
 
 react-router中<Link/>和<a/>的区别
 http://www.cnblogs.com/penghuwan/p/6623099.html
-
-css 实现字体渐变颜色
-https://www.jianshu.com/p/8a5c0f1b8ccf
-
-CSS文字超出部分隐藏并显示省略号
-https://www.22vd.com/12124.html
